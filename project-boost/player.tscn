@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://b5vvcmle4nqtm"]
+
+[ext_resource type="Script" uid="uid://bp3c3727pknlg" path="res://player.gd" id="1_4flbx"]
+[ext_resource type="AudioStream" uid="uid://dbv731rvo0t6t" path="res://audio/SFX - Death Explosion.ogg" id="2_i3pqv"]
+[ext_resource type="AudioStream" uid="uid://dhh6rp56lb7ta" path="res://audio/SFX - Success.ogg" id="3_hqtel"]
+[ext_resource type="AudioStream" uid="uid://nx1pkn85b8rk" path="res://audio/SFX - Main engine thrust.ogg" id="4_hqtel"]
+[ext_resource type="PackedScene" uid="uid://ux6ivcx1ovdp" path="res://Particles/booster_particles.tscn" id="5_sweqy"]
+[ext_resource type="PackedScene" uid="uid://dcecb8hw7dbrv" path="res://Particles/explosion_particles.tscn" id="6_1jxqw"]
+[ext_resource type="PackedScene" uid="uid://jfwajmrh6ca7" path="res://Particles/success_particles.tscn" id="7_dw050"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1jxqw"]
+albedo_color = Color(0.874907, 0, 0.14873686, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1jxqw"]
+material = SubResource("StandardMaterial3D_1jxqw")
+top_radius = 0.2
+bottom_radius = 0.2
+height = 1.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i3pqv"]
+material = SubResource("StandardMaterial3D_1jxqw")
+top_radius = 0.0
+bottom_radius = 0.2
+height = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_b26j0"]
+material = SubResource("StandardMaterial3D_1jxqw")
+top_radius = 0.35
+bottom_radius = 0.4
+height = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_dw050"]
+material = SubResource("StandardMaterial3D_1jxqw")
+top_radius = 0.0
+bottom_radius = 0.3
+height = 0.5
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4flbx"]
+
+[node name="Player" type="RigidBody3D" unique_id=230812016]
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+contact_monitor = true
+max_contacts_reported = 10
+linear_damp = 1.0
+angular_damp = 3.0
+script = ExtResource("1_4flbx")
+
+[node name="Body" type="MeshInstance3D" parent="." unique_id=647143783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("CylinderMesh_1jxqw")
+
+[node name="Cockpit" type="MeshInstance3D" parent="Body" unique_id=1336578924]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CylinderMesh_i3pqv")
+skeleton = NodePath("../..")
+
+[node name="Cockpit2" type="MeshInstance3D" parent="Body" unique_id=218955620]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38679624, 0)
+mesh = SubResource("CylinderMesh_b26j0")
+skeleton = NodePath("../..")
+
+[node name="RightThruster" type="MeshInstance3D" parent="Body" unique_id=1940319708]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, -0.5, 0)
+mesh = SubResource("CylinderMesh_dw050")
+skeleton = NodePath("../..")
+
+[node name="Thruster" type="MeshInstance3D" parent="Body" unique_id=410220601]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("CylinderMesh_dw050")
+skeleton = NodePath("../..")
+
+[node name="LeftThruster" type="MeshInstance3D" parent="Body" unique_id=1384687679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, -0.5, 0)
+mesh = SubResource("CylinderMesh_dw050")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1771689097]
+shape = SubResource("CylinderShape3D_4flbx")
+
+[node name="ExplosionAudio" type="AudioStreamPlayer" parent="." unique_id=820920016]
+stream = ExtResource("2_i3pqv")
+
+[node name="SuccessAudio" type="AudioStreamPlayer" parent="." unique_id=43503443]
+stream = ExtResource("3_hqtel")
+
+[node name="RocketAudio" type="AudioStreamPlayer3D" parent="." unique_id=509052849]
+stream = ExtResource("4_hqtel")
+
+[node name="BoosterParticles" parent="." unique_id=1976538526 instance=ExtResource("5_sweqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="RightBoosterParticles" parent="." unique_id=727038550 instance=ExtResource("5_sweqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -1, 0)
+
+[node name="LeftBoosterParticles" parent="." unique_id=1697404448 instance=ExtResource("5_sweqy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, -1, 0)
+
+[node name="ExplosionParticles" parent="." unique_id=1305082247 instance=ExtResource("6_1jxqw")]
+
+[node name="SuccessParticles" parent="." unique_id=545871808 instance=ExtResource("7_dw050")]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
